@@ -7,34 +7,20 @@ document.querySelector('button').addEventListener('click', getDrink)
 
 function getDrink(){
     let drink = document.querySelector('input').value
+    const htmlDrinkListContainer = document.querySelector('#drinks-list')
 
     fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${drink}`)
         .then(res => res.json()) // parse response as JSON
         .then(data => {
-        console.log(data)
+            htmlDrinkListContainer.innerHTML = ''
 
-        let drinks = data.drinks
+            let drinks = data.drinks
 
-        let drink2 = drinks[0]
-
-        //drinks.forEach( drink => {
-            document.querySelector('h2').innerText = drink2.strDrink
-            document.querySelector('img').src = drink2.strDrinkThumb
-            document.querySelector('h3').innerText = drink2.strInstructions
-        //} )
-    /*
-            document.querySelector('h2').innerText = data
-            document.querySelector('h2')
-            document.querySelector('h2')
-
-
-    /*
-            let drinks = data
-
-            data.forEach( () => {
-
-            } )*/
-
+            drinks.forEach( drink => {
+                htmlDrinkListContainer.insertAdjacentHTML('beforeend', `<div class="single-drink"><h2>${drink.strDrink}</h2>`)
+                htmlDrinkListContainer.insertAdjacentHTML('beforeend', `<img src="${drink.strDrinkThumb}"/>`)
+                htmlDrinkListContainer.insertAdjacentHTML('beforeend', `<p>${drink.strInstructions}</p></div>`)    
+            })
 
         })
         .catch(err => {
